@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>欢迎使用本系统</h1>
+<ul>
+  {% for k,v in user_dict.items()%}
+  <li class="information">{{v.name}} <a href="/detail?uid={{k}}">查看详细</a></li> <!--通过get传递用户参数 -->
+  {% endfor %}
+    <a href="/logout">登出</a>
+</ul>
+</body>
+</html>

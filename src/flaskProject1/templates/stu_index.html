@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学生首页</title>
+    <style>
+        body{
+            background: #d3fcff;
+        }
+
+        .logo{
+            opacity: 0.2;
+            text-align: center;
+            margin:auto;
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+             -webkit-user-select: none;
+ -moz-user-select: none;
+ -ms-user-select: none;
+ user-select: none;
+        }
+
+        button{
+		width:100%;
+        background:transparent;
+        border-radius: 10px;
+        border:none;
+
+	}
+        select{
+            background: transparent;
+        }
+        input{
+            background: transparent;
+        }
+
+        .leftside{
+            position:fixed;
+            top:5%;
+            left:0%;
+            width:10%;
+            height:100%;
+            background: #abdde2;
+            transition:0.5s ease-in-out;
+             overflow: hidden;<!--设置滚动条自动隐藏 -->
+        }
+
+        .topside{
+            position:fixed;
+            top:0%;
+            width:100%;
+            height:5%;
+            transition:0.5s ease-in-out;
+
+
+        }
+        .info{
+            position:fixed;
+            top:5%;
+            right:0%;
+            width:90%;
+            height:100%;
+            transition:0.5s ease-in-out;
+                    overflow: hidden;<!--设置滚动条自动隐藏 -->
+
+        }
+
+        .bottom
+        {
+            position:absolute;
+            right:0px;
+            bottom:0px;
+            background:transparent;
+            color:#fff;
+            display:block;
+            width:100%;
+            text-align:center;
+            z-index: 10;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        .bottom span
+        {
+            position:relative;
+            display:block;
+            left:0;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<div class="logo"> <!-- 背景图片显示-->
+    <img src="https://www.nuist.edu.cn/_upload/tpl/00/43/67/template67/images/logo.png"/>
+</div>
+
+
+
+
+
+<div class="topside"> <!--上边栏 -->
+<h5>学生{{msg}}<a href="/logout">登出</a>,欢迎使用本系统</h5>
+</div>
+
+
+<div class="info" id="course_detail" style="display: block"> <!--中间信息显示区(课程) -->
+<ul>
+   <a name="course" id="course"><h3>已选课程</h3></a>
+
+  {% for course,cno in courses.items() %}
+  <li class="information">{{course}}<a href="/stu_detail?cno={{cno}}">进入学习</a></li> <!--通过get传递用户参数 -->
+  {% endfor %}
+</ul>
+</div>
+
+
+
+<div class="info" id="grade_detail" style="display: none"> <!--中间信息显示区(成绩) -->
+<ul>
+<table border="1" width="auto">
+    <a name="grade" id="grade"><h3>各科成绩</h3></a>
+    <tr>
+        <th>课程</th> <th>成绩</th>
+    </tr>
+    {% for i in grades %}
+     <tr>
+         <td>{{i[0]}}</td>> <td>{{i[1]}}</td> <!--通过get传递用户参数 -->
+     </tr>
+    {% endfor %}
+</table>
+</ul>
+</div>>
+
+<div class="info" id="change_pwd" style="display: none"> <!--中间信息显示区(修改密码) -->
+<ul>
+    <h3>修改密码</h3>
+    <form method="post">
+    <p>旧密码：</p>
+    <input type="password" name="oldpwd">
+    <p>新密码：</p>
+    <input type="password" name="newpwd1">
+    <p>确认密码:</p>
+    <input type="password" name="newpwd2">
+    <input type="submit" value="提交">
+    {{wrongmsg}} <!--用于传递报错信息 -->
+    </form>
+</ul>
+</div>
+
+
+<div class="leftside"><!--左边框-->
+ <button onclick="Showcourse_detail();"><h4>已选课程学习</h4></button>
+    <button onclick="Showgrade_detail();"><h4>各科成绩</h4></button>
+    <button onclick="Showchange_pwd();"><h4>修改密码</h4></button>
+</div>
+
+
+<div class="bottom">
+            <span class="style4">  </span>
+            <span an class="style4">  </span>
+            <span class="style4">@201983290527郑杰辉</span><br />
+            <span class="style4">网页所有权归郑杰辉所有  电话：18625178632  </span> <br />
+</div>
+
+</body>
+
+
+<script>
+		var temp=0;
+		function Showcourse_detail(){
+			document.getElementById("course_detail").style.display='block';
+			document.getElementById("grade_detail").style.display='none';
+			document.getElementById("change_pwd").style.display='none';
+			//alert(1);
+		}
+
+		function Showgrade_detail(){
+			document.getElementById("course_detail").style.display='none';
+			document.getElementById("grade_detail").style.display='block';
+			document.getElementById("change_pwd").style.display='none';
+			//alert(2);
+		}
+
+		function Showchange_pwd(){
+			document.getElementById("course_detail").style.display='none';
+			document.getElementById("grade_detail").style.display='none';
+			document.getElementById("change_pwd").style.display='block';
+			//alert(3);
+		}
+
+		//document.getElementById("button_detail").onclick=Showdetail();
+		//document.getElementById("button_change_pwd").onclick=Showchange_pwd();
+		//document.getElementById("button_add_stu").onclick=Showadd_stu();
+	</script>
+
+
+
+</html>

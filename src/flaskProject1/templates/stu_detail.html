@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ Cname }}学习页</title>
+    <style>
+        body{
+            background: #d3fcff;
+        }
+
+        .logo{
+            opacity: 0.2;
+            text-align: center;
+            margin:auto;
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+                .bottom
+        {
+            position:absolute;
+            right:0px;
+            bottom:0px;
+            background:transparent;
+            color:#fff;
+            display:block;
+            width:100%;
+            text-align:center;
+            z-index: 10;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        .bottom span
+        {
+            position:relative;
+            display:block;
+            left:0;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+        }
+    </style>
+</head>
+<body>
+<div class="logo">
+    <img src="https://www.nuist.edu.cn/_upload/tpl/00/43/67/template67/images/logo.png"/>
+</div>
+
+<div>
+<h1>{{ Cno }} {{ Cname }}</h1>
+<h2>{{ Tname }}</h2>
+
+    {% for i in tasks %}
+        <li>{{ i[0] }}</li>
+        {% if i[2]=='U' %}
+        <a href={{ i[1] }}>点此前往学习链接</a>
+        {% elif i[2]=='R' %}
+            <p>{{ i[1] }}</p>
+        {% elif i[2]=='V' %}
+            <section id="wrapper">
+	        <div class="videoContainer">
+
+            <video id="myVideo" controls preload="auto" poster="https://www.nuist.edu.cn/_upload/tpl/00/43/67/template67/images/logo.png" width="380" >
+                <source src={{ i[1] }} type="video/mp4" />
+		         <p>Your browser does not support the video tag.</p>
+		    </video>
+	        </div>
+            </section>
+        {% endif %}
+
+    {% endfor %}
+
+
+</div>
+
+<div class="bottom">
+            <span class="style4">  </span>
+            <span an class="style4">  </span>
+            <span class="style4">@201983290527郑杰辉</span><br />
+            <span class="style4">网页所有权归郑杰辉所有  电话：18625178632  </span> <br />
+</div>
+</body>
+</html>

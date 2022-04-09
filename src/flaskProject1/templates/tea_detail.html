@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ Cname }}详情页</title>
+    <style>
+        body{
+            background: #d3fcff;
+        }
+
+        .logo{
+            opacity: 0.2;
+            text-align: center;
+            margin:auto;
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        button{
+		width:100%;
+        background:transparent;
+        border-radius: 10px;
+        border:none;
+	}
+        select{
+            background: transparent;
+        }
+        input{
+            background: transparent;
+        }
+
+        .leftside{
+            position:fixed;
+            top:5%;
+            left:0%;
+            width:10%;
+            height:100%;
+            background: #abdde2;
+            transition:0.5s ease-in-out;
+             overflow: hidden;<!--设置滚动条自动隐藏 -->
+        }
+
+        .topside{
+            position:fixed;
+            top:0%;
+            width:100%;
+            height:5%;
+            transition:0.5s ease-in-out;
+
+
+        }
+        .info{
+            position:fixed;
+            top:5%;
+            right:0%;
+            width:90%;
+            height:100%;
+            transition:0.5s ease-in-out;
+                    overflow: hidden;<!--设置滚动条自动隐藏 -->
+
+        }
+
+        table{
+            width:100%;
+        }
+        th{
+            height:50px;
+            text-align: center;
+        }
+        .student_info{
+            border-radius: 25px;
+
+            padding: 50px;
+            width: 30%;
+            height: auto;
+            margin:auto;
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+                .bottom
+        {
+            position:absolute;
+            right:0px;
+            bottom:0px;
+            background:transparent;
+            color:#fff;
+            display:block;
+            width:100%;
+            text-align:center;
+            z-index: 10;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        .bottom span
+        {
+            position:relative;
+            display:block;
+            left:0;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+        }
+    </style>
+</head>
+
+
+<div class="topside"><!--顶部 -->
+<h5>{{Cno}}{{ Cname }}</h5>
+</div>>
+
+
+<div class="logo"><!--背景图片-->
+    <img src="https://www.nuist.edu.cn/_upload/tpl/00/43/67/template67/images/logo.png"/>
+</div>
+
+
+<div class="info" id="class_task" style="display: block"><!--中间信息显示区(任务表)-->
+    <ul>
+        <h3>学习任务</h3>
+        {% for i in tasks %}
+        <li>{{ i[0] }}</li>
+        {% if i[2]=='U' %}
+        <a href={{ i[1] }}>点此前往学习链接</a>
+        {% elif i[2]=='R' %}
+            <p>{{ i[1] }}</p>
+        {% elif i[2]=='V' %}
+            <section id="wrapper">
+	        <div class="videoContainer">
+
+            <video id="myVideo" controls preload="auto" poster="https://www.nuist.edu.cn/_upload/tpl/00/43/67/template67/images/logo.png" width="380" >
+                <source src={{ i[1] }} type="video/mp4" />
+		         <p>Your browser does not support the video tag.</p>
+		    </video>
+	        </div>
+            </section>
+        {% endif %}
+
+    {% endfor %}
+    </ul>
+</div>
+
+
+<div class="info" id="stu_detail" style="display: none"><!--中间信息显示区(选课学生信息)-->
+<div class="student_info">
+<table border="1" width="auto">
+<caption>
+    <h2>选课学生信息表</h2>
+</caption>
+<tr>
+<th>学号</th>
+<th>姓名</th>
+</tr>
+{% for sno,sname in students.items() %}
+    <tr>
+    <td>{{ sno }}</td><td> {{ sname }}</td>
+    </tr>
+{% endfor %}
+</table>
+</div>
+</div>
+
+
+<div class="info" id="add_task" style="display: none"><!--中间信息显示区(增加课程任务)-->
+    <ul>
+
+        <h3>课程任务</h3>
+        <form method="post" id="form_add_task">
+        <h3>课程号</h3>
+        <select name="cno">
+        <option value={{ Cno }}>{{ Cno }}</option>
+        </select>
+        <h4>任务名称</h4>
+        <input type="text" size="30" maxlength="20" value="请输入任务名称" name="task_name"/>
+         <h4>任务类型
+        <select name="task_type">
+           {% for i in ['U','V','R'] %}
+              <option value={{ i }}>{{ i }}</option>
+           {% endfor %}
+        </select></h4>
+        <h4>任务内容</h4>
+        <textarea rows="3" cols="30" name="task_content">请输入任务内容……</textarea>
+
+        <p></p>
+        <input type="submit" value="提交">
+        </form>
+    {{ msg }}
+    </ul>
+</div>
+
+
+<div class="info" id="delete_task" style="display: none">
+    <ul>
+        <h3>删除或更改课程任务</h3>
+         <form method="post" id="form_change_task" action="/change_task/">
+             <h3>课程号</h3>
+            <select name="cno">
+            <option value={{ Cno }}>{{ Cno }}</option>
+            </select>
+             <h3>操作类型</h3>
+            <select name="operation_type" autocomplete="off" onchange="if (this.value='c'){document.getElementById('change_content').style.display='block'}else{document.getElementById('change_content').style.display='none'}">
+            <option value='d'>删除</option>
+            <option value='c'>更改</option>
+            </select>
+            <h3>选择任务</h3>
+            <select name="choose_task">
+             {% for i in tasks %}
+             <option value={{ i[0] }}>{{ i[0] }}</option>
+             {% endfor %}
+            </select>
+
+            <div id="change_content" style="display: none">
+                 <h4>任务类型
+                    <select name="change_type" autocomplete="off">
+                    {% for i in ['U','V','R'] %}
+                    <option value={{ i }}>{{ i }}</option>
+                    {% endfor %}
+                    </select>
+                 </h4>
+                <h4>请输入更改后的任务内容</h4>
+            <textarea rows="3" cols="30" name="change_task_content" autocomplete="off"></textarea>
+            </div>
+            <input type="submit" value="提交">{{ msg2 }}
+         </form>
+    </ul>
+
+</div>
+
+
+<div class="leftside"><!--左边框-->
+    <button onclick="Showclass_task();"><h4>学习任务</h4></button>
+    <button onclick="Showstu_detail();"><h4>选课学生信息</h4></button>
+    <button onclick="Showadd_task();"><h4>增加课程任务</h4></button>
+    <button onclick="Showdelete_task();"><h4>删除/更改课程任务</h4>></button>
+</div>
+
+<div class="bottom">
+            <span class="style4">  </span>
+            <span an class="style4">  </span>
+            <span class="style4">@201983290527郑杰辉</span><br />
+            <span class="style4">网页所有权归郑杰辉所有  电话：18625178632  </span> <br />
+</div>
+</body>
+
+<script>
+    function Showclass_task(){
+			document.getElementById("class_task").style.display='block';
+			document.getElementById("stu_detail").style.display='none';
+			document.getElementById("add_task").style.display='none';
+			document.getElementById("delete_task").style.display='none';
+			//alert(1);
+		}
+
+
+    function Showstu_detail(){
+			document.getElementById("class_task").style.display='none';
+			document.getElementById("stu_detail").style.display='block';
+			document.getElementById("add_task").style.display='none';
+			document.getElementById("delete_task").style.display='none';
+			//alert(1);
+		}
+
+
+    function Showadd_task(){
+			document.getElementById("class_task").style.display='none';
+			document.getElementById("stu_detail").style.display='none';
+			document.getElementById("add_task").style.display='block';
+			document.getElementById("delete_task").style.display='none';
+			//alert(3);
+		}
+
+    function Showdelete_task(){
+            document.getElementById("class_task").style.display='none';
+			document.getElementById("stu_detail").style.display='none';
+			document.getElementById("add_task").style.display='none';
+			document.getElementById("delete_task").style.display='block';
+    }
+
+
+</script>
+
+</html>
